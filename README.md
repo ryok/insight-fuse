@@ -32,6 +32,7 @@ InsightFuseは、技術ニュースを自動収集し、AI（LLM）を活用し�
 - Docker & Docker Compose
 - Node.js 18+
 - Python 3.11+
+- uv (Python package manager)
 - PostgreSQL (Dockerで提供)
 
 ### 環境変数の設定
@@ -70,17 +71,28 @@ docker-compose up -d postgres
 ```
 
 2. **バックエンドのセットアップ**:
+
+まず、uvをインストール（未インストールの場合）:
+```bash
+# macOS/Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+バックエンドの起動:
 ```bash
 cd backend
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install -r requirements.txt
+
+# 依存関係のインストール
+uv sync
 
 # データベースマイグレーション
-alembic upgrade head
+uv run alembic upgrade head
 
-# サーバー起動
-python run.py
+# 開発サーバー起動
+uv run python run.py
 ```
 
 3. **フロントエンドのセットアップ**:
@@ -111,19 +123,20 @@ npm run dev
 ```bash
 # バックエンド
 cd backend
-pytest
+uv run pytest
 
 # フロントエンド
 cd frontend
 npm test
 ```
 
-### リンターの実行
+### リンターとフォーマッターの実行
 ```bash
 # バックエンド
 cd backend
-flake8
-black .
+uv run ruff check .    # Linting
+uv run black .         # Formatting
+uv run mypy .          # Type checking
 
 # フロントエンド
 cd frontend
