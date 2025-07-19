@@ -1,0 +1,90 @@
+[project]
+name = "insightfuse"
+version = "1.0.0"
+description = "AI-powered news aggregation and analysis platform"
+authors = [{name = "InsightFuse Team", email = ""}]
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi==0.104.1",
+    "uvicorn[standard]==0.24.0",
+    "pydantic==2.5.0",
+    "pydantic-settings==2.1.0",
+    "httpx==0.25.2",
+    "sqlalchemy==2.0.23",
+    "alembic==1.12.1",
+    "psycopg2-binary==2.9.9",
+    "python-dotenv==1.0.0",
+    "feedparser==6.0.10",
+    "beautifulsoup4==4.12.2",
+    "lxml==4.9.3",
+    "openai==1.3.8",
+    "anthropic==0.8.1",
+    "schedule==1.2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==7.4.3",
+    "pytest-asyncio==0.21.1",
+    "pytest-cov==4.1.0",
+    "black==23.11.0",
+    "ruff==0.1.7",
+    "mypy==1.7.1",
+    "types-python-dateutil==2.8.19.14",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=7.4.3",
+    "pytest-asyncio>=0.21.1",
+    "pytest-cov>=4.1.0",
+    "black>=23.11.0",
+    "ruff>=0.1.7",
+    "mypy>=1.7.1",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "C",    # flake8-comprehensions
+    "B",    # flake8-bugbear
+    "UP",   # pyupgrade
+]
+ignore = [
+    "E501",  # line too long, handled by black
+    "B008",  # do not perform function calls in argument defaults
+]
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+addopts = [
+    "--asyncio-mode=auto",
+    "-v",
+    "--cov=app",
+    "--cov-report=term-missing",
+]
