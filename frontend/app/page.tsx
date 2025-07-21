@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import Link from 'next/link'
 import ArticleList from '@/components/ArticleList'
 import LanguageFilter from '@/components/LanguageFilter'
 import SourceFilter from '@/components/SourceFilter'
@@ -29,7 +30,7 @@ export default function Home() {
           </p>
         </header>
 
-        <div className="mb-8 flex flex-wrap gap-4">
+        <div className="mb-8 flex flex-wrap gap-4 items-center">
           <LanguageFilter
             value={selectedLanguage}
             onChange={setSelectedLanguage}
@@ -39,6 +40,21 @@ export default function Home() {
             onChange={setSelectedSource}
           />
           <FetchButton onSuccess={() => refetch()} />
+          
+          <div className="ml-auto flex gap-4">
+            <Link
+              href="/custom-sites"
+              className="text-primary-500 hover:text-primary-600 text-sm"
+            >
+              カスタムサイト管理 →
+            </Link>
+            <Link
+              href="/gmail"
+              className="text-primary-500 hover:text-primary-600 text-sm"
+            >
+              Gmail設定 →
+            </Link>
+          </div>
         </div>
 
         {isLoading ? (

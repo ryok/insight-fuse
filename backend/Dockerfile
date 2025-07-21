@@ -31,7 +31,11 @@ RUN uv pip install --system \
     lxml==4.9.3 \
     openai==1.3.8 \
     anthropic==0.8.1 \
-    schedule==1.2.0
+    schedule==1.2.0 \
+    langdetect==1.0.9 \
+    google-api-python-client==2.110.0 \
+    google-auth-oauthlib==1.1.0 \
+    google-auth-httplib2==0.2.0
 
 # Copy application code
 COPY . .

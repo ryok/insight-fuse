@@ -63,3 +63,17 @@ dist/
 .cache/
 tmp/
 temp/
+
+# Next.js
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# Gmail API
+credentials.json
+token.json
+
+# Lock files (managed by package managers)
+backend/uv.lock
+frontend/package-lock.json
