@@ -51,7 +51,7 @@ class NewsFetcher:
         articles = []
         
         async with httpx.AsyncClient() as client:
-            for source in settings.NEWS_SOURCES:
+            for source in settings.news_sources_list:
                 try:
                     response = await client.get(
                         f"{self.base_url}/everything",

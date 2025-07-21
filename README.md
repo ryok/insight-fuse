@@ -53,7 +53,7 @@ NEWS_API_KEY=your_newsapi_key
 
 ```bash
 # データベースとバックエンドを起動
-docker-compose up -d
+docker compose up -d
 
 # フロントエンドの依存関係をインストール
 cd frontend
@@ -67,7 +67,7 @@ npm run dev
 
 1. **データベースの起動**:
 ```bash
-docker-compose up -d postgres
+docker compose up -d postgres
 ```
 
 2. **バックエンドのセットアップ**:

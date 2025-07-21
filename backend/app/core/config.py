@@ -1,5 +1,5 @@
 from pydantic_settings import BaseSettings
-from typing import List, Optional
+from typing import List, Optional, Union
 from functools import lru_cache
 
 
@@ -24,9 +24,21 @@ class Settings(BaseSettings):
     NEWS_API_KEY: Optional[str] = None
     
     # News Settings
-    NEWS_SOURCES: List[str] = ["techcrunch", "ars-technica", "the-verge", "hacker-news"]
-    NEWS_LANGUAGES: List[str] = ["en", "ja", "zh"]
+    NEWS_SOURCES: Union[str, List[str]] = "techcrunch,ars-technica,the-verge,hacker-news"
+    NEWS_LANGUAGES: Union[str, List[str]] = "en,ja,zh"
     NEWS_FETCH_LIMIT: int = 50
+    
+    @property
+    def news_sources_list(self) -> List[str]:
+        if isinstance(self.NEWS_SOURCES, str):
+            return [s.strip() for s in self.NEWS_SOURCES.split(',')]
+        return self.NEWS_SOURCES
+    
+    @property
+    def news_languages_list(self) -> List[str]:
+        if isinstance(self.NEWS_LANGUAGES, str):
+            return [s.strip() for s in self.NEWS_LANGUAGES.split(',')]
+        return self.NEWS_LANGUAGES
     
     # LLM Settings
     LLM_MODEL: str = "gpt-4-turbo-preview"

@@ -70,3 +70,42 @@ class FetchHistory(Base):
     error_message = Column(Text)
     
     created_at = Column(DateTime, server_default=func.now())
+
+
+class CustomSite(Base):
+    __tablename__ = "custom_sites"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=False)
+    url = Column(String(1000), nullable=False)
+    site_type = Column(String(50), nullable=False)  # substack, newsletter, blog, generic
+    language = Column(String(10), default='en')
+    category = Column(String(50))
+    tags = Column(JSON)
+    enabled = Column(Boolean, default=True)
+    
+    # スクレイピング設定
+    scraping_config = Column(JSON)  # カスタム設定（セレクター等）
+    
+    # スケジュール設定
+    fetch_interval_hours = Column(Integer, default=24)  # 取得間隔（時間）
+    last_fetched = Column(DateTime)
+    
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+    
+    fetch_logs = relationship("CustomSiteFetchLog", back_populates="site")
+
+
+class CustomSiteFetchLog(Base):
+    __tablename__ = "custom_site_fetch_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    site_id = Column(Integer, ForeignKey("custom_sites.id"))
+    fetch_time = Column(DateTime, server_default=func.now())
+    articles_found = Column(Integer, default=0)
+    articles_saved = Column(Integer, default=0)
+    status = Column(String(20))  # success, failed, partial
+    error_message = Column(Text)
+    
+    site = relationship("CustomSite", back_populates="fetch_logs")

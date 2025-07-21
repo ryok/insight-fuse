@@ -1,4 +1,4 @@
-import openai
+from openai import OpenAI
 from anthropic import Anthropic
 from typing import Dict, List, Optional
 from app.core.config import settings
@@ -17,9 +17,14 @@ class LLMService:
         self.temperature = settings.TEMPERATURE
         
         if self.openai_api_key:
-            openai.api_key = self.openai_api_key
+            self.openai_client = OpenAI(api_key=self.openai_api_key)
+        else:
+            self.openai_client = None
+            
         if self.anthropic_api_key:
             self.anthropic = Anthropic(api_key=self.anthropic_api_key)
+        else:
+            self.anthropic = None
     
     async def generate_summary(self, content: str, language: str = "en") -> Dict:
         prompt = self._build_summary_prompt(content, language)
@@ -93,7 +98,7 @@ class LLMService:
         """
     
     async def _generate_with_openai(self, prompt: str, task_type: str) -> Dict:
-        response = await openai.ChatCompletion.acreate(
+        response = await self.openai_client.chat.completions.create(
             model=self.model,
             messages=[
                 {"role": "system", "content": "You are a helpful assistant that analyzes news articles."},
